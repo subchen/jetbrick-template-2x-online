@@ -197,18 +197,18 @@ app.controller('TestCaseController', ['$scope', '$http', '$window', function($sc
                 testcase.files = data.files;
                 testcase.model = data.model;
                 testcase.result = '';
-
-                $scope.testcase = testcase;
-                $scope.testcase.file = $scope.testcase.files[0];
-                $scope.editing = false;
-                $scope.executing = false;    
+                $scope.displayTestCase(testcase);
             });
         } else {
-            $scope.testcase = testcase;
-            $scope.testcase.file = $scope.testcase.files[0];
-            $scope.editing = false;
-            $scope.executing = false;
+            $scope.displayTestCase(testcase);
         }
+    };
+
+    $scope.displayTestCase = function(testcase) {
+        $scope.testcase = testcase;
+        $scope.testcase.file = $scope.testcase.files[0];
+        $scope.editing = false;
+        $scope.executing = false;
     };
 
     $scope.uuid = 1;
