@@ -2409,7 +2409,7 @@ var JetxHighlightRules = function() {
     );
 
     var keywords = lang.arrayToMap(
-        ("#define|#set|#if|#elseif|#else|#end|#for|#break|#continue|#stop|#include|#return|#macro|#call|#tag").split('|')
+        ("#options|#define|#set|#if|#elseif|#else|#end|#for|#break|#continue|#stop|#include|#return|#macro|#call|#tag").split('|')
     );
 
     this.$rules.start.push(

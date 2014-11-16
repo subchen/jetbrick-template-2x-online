@@ -23,7 +23,7 @@ public final class TemplateService {
                 for (int i = 0; i < ctx.getFileSize(); i++) {
                     engine.set(ctx.getFile(i), ctx.getSource(i));
                 }
-                JetTemplate template = engine.getTemplate(ctx.getEntryFile());
+                JetTemplate template = engine.getTemplate(ctx.getMainFile());
                 StringWriter writer = new StringWriter();
                 template.render(ctx.getContext(), writer);
                 return writer.toString();

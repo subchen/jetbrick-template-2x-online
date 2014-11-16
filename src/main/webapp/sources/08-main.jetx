@@ -1,0 +1,4 @@
+#options(
+	safecall = true
+)
+Hello ${who.capitalize()}!

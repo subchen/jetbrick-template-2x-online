@@ -17,20 +17,19 @@ public final class ExecuteController {
     private TemplateService templateService;
 
     @Action("/execute")
-    public JSONAware execute(@RequestParam String files, @RequestParam String sources, @RequestParam int entryIndex, @RequestParam String model) {
-        JSONArray jsonFiles = JSON.parseArray(files);
-        JSONArray jsonSources = JSON.parseArray(sources);
-        JSONObject jsonModel = JSON.parseObject(model);
-
-        TemplateContext ctx = new TemplateContext();
-        for (int i = 0; i < jsonFiles.size(); i++) {
-            ctx.addFileSource(jsonFiles.getString(i), jsonSources.getString(i));
-        }
-        ctx.setEntryIndex(entryIndex);
-        ctx.setContext(jsonModel);
-
+    public JSONAware execute(@RequestParam String files, @RequestParam String model) {
         JSONObject json = new JSONObject();
         try {
+            JSONArray jsonFiles = JSON.parseArray(files);
+            JSONObject jsonModel = JSON.parseObject(model);
+
+            TemplateContext ctx = new TemplateContext();
+            for (int i = 0; i < jsonFiles.size(); i++) {
+                JSONObject file = jsonFiles.getJSONObject(i);
+                ctx.addFileSource(file.getString("name"), file.getString("source"));
+            }
+            ctx.setContext(jsonModel);
+
             String result = templateService.execute(ctx);
             json.put("succ", true);
             json.put("result", result);
