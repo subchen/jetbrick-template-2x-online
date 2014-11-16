@@ -21,9 +21,11 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.2.3.v20140905</version>
                 <configuration>
+                    <webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                     <webApp>
                         <contextPath>/</contextPath>
+                        <defaultsDescriptor>src/main/resources/webdefault.xml</defaultsDescriptor>
                     </webApp>
                 </configuration>
             </plugin>
@@ -31,6 +33,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jetbrick-commons</artifactId>
+            <version>2.0.2</version>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>jetbrick-webmvc</artifactId>

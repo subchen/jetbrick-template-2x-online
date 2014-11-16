@@ -19,10 +19,10 @@
  */
 package jetbrick.template;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import jetbrick.io.resource.Resource;
 import jetbrick.io.resource.ResourceNotFoundException;
-import jetbrick.template.*;
 import jetbrick.template.loader.resource.SourceResource;
 import jetbrick.template.resolver.GlobalResolver;
 
@@ -61,6 +61,9 @@ public final class SandboxJetEngine extends JetEngine {
     @Override
     public JetTemplate getTemplate(String name) throws ResourceNotFoundException {
         String source = files.get(name);
+        if (source == null) {
+            throw new ResourceNotFoundException(name);
+        }
         Resource resource = new SourceResource(name, source);
         JetTemplate template = new JetTemplateImpl(this, resource, false, getConfig().getTemplateSecurityManager());
         template.reload();

@@ -1,2 +1,2 @@
-#define(String who)
-Hello ${who.capitalize()}!
+#set(String who = "jetbrick")
+#include("layout.jetx")

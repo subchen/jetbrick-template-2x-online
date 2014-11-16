@@ -1,1 +1,7 @@
-{"who": "jetbrick"}
+{
+    "user": {
+        "auth": true,
+        "name": "jetbrick",
+        "role": "vip"
+    }
+}

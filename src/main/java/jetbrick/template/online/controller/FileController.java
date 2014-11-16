@@ -1,39 +1,27 @@
 package jetbrick.template.online.controller;
 
-import java.io.*;
-import java.util.*;
-import javax.servlet.*;
-
-import jetbrick.io.*;
-import jetbrick.util.*;
-import jetbrick.web.mvc.*;
-import jetbrick.web.mvc.action.*;
-import jetbrick.web.mvc.action.annotation.*;
-
-import com.alibaba.fastjson.*;
+import javax.servlet.ServletContext;
+import jetbrick.ioc.annotation.Inject;
+import jetbrick.template.online.service.CaseService;
+import jetbrick.web.mvc.action.Action;
+import jetbrick.web.mvc.action.Controller;
+import jetbrick.web.mvc.action.annotation.PathVariable;
+import com.alibaba.fastjson.JSONAware;
 
 @Controller
 public final class FileController {
 
+    @Inject
+    private CaseService caseService;
+
     @Action("/files")
-    public JSONAware files() {
-        JSONArray json = new JSONArray();
-        json.add("01. Hello World!");
-        return json;
+    public JSONAware files(ServletContext sc) {
+        return caseService.getCaseList();
     }
 
     @Action("/files/{id}")
     public JSONAware file(ServletContext sc, @PathVariable String id) {
-        InputStream is = sc.getResourceAsStream("/sources/" + id + ".jetx");
-        String source = IoUtils.toString(is, "utf-8");
-
-        is = sc.getResourceAsStream("/sources/" + id + ".json");
-        String model = IoUtils.toString(is, "utf-8");
-        
-        JSONObject json = new JSONObject();
-        json.put("source", source.trim());
-        json.put("model", model.trim());
-        return json;
+        return caseService.getCase(id);
     }
 
 }

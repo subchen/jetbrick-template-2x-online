@@ -1,9 +1,8 @@
 package jetbrick.template.online.service;
 
-import java.io.*;
-import java.util.*;
+import java.io.StringWriter;
 import java.util.concurrent.*;
-import jetbrick.ioc.annotation.*;
+import jetbrick.ioc.annotation.IocBean;
 import jetbrick.template.*;
 
 @IocBean
@@ -16,14 +15,17 @@ public final class TemplateService {
         this.engine = JetEngine.create();
     }
 
-    public String execute(final String source, final Map<String, Object> context) {
+    public String execute(final TemplateContext ctx) {
         Future<String> future = pool.submit(new Callable<String>() {
+            @Override
             public String call() {
                 SandboxJetEngine engine = new SandboxJetEngine(TemplateService.this.engine);
-                engine.set("/main.jetx", source);
-                JetTemplate template = engine.getTemplate("/main.jetx");
+                for (int i = 0; i < ctx.getFileSize(); i++) {
+                    engine.set(ctx.getFile(i), ctx.getSource(i));
+                }
+                JetTemplate template = engine.getTemplate(ctx.getEntryFile());
                 StringWriter writer = new StringWriter();
-                template.render(context, writer);
+                template.render(ctx.getContext(), writer);
                 return writer.toString();
             }
         });
