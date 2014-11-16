@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <link href="./assets/css/cosmo-bootstrap.min.css" rel="stylesheet">
     <link href="./assets/css/font-awesome.min.css" rel="stylesheet">
 
@@ -16,6 +17,18 @@
 </head>
 
 <style type="text/css">
+.navbar {
+	background-color: #001D2B;
+	box-shadow: 0 0 5px #000;
+	border-color: #080808;
+}
+.row {
+	margin-top: 70px;
+}
+footer {
+	text-align: center;
+}
+
 .ace_editor {
     margin-top: 10px;
     width: 100%;
@@ -56,119 +69,149 @@
 
 
 <body ng-app="jetx-online">
-    <br>
-    <br>
 
-    <div class="container" ng-controller="TestCaseController">
-        <div class="row">
-            <div class="col-xs-3">
-                <div class="list-group" role="navlist">
-                    <a href="#" class="list-group-item" ng-repeat="tc in testcases" ng-class="{active: tc==testcase}" ng-click="switchTestCase(tc.id)">
-                        <i class="fa fa-chevron-right"></i> {{tc.id}}. {{tc.desc}}
-                    </a>
-                </div>
-            </div>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://subchen.github.io/jetbrick-template/index.html" class="navbar-brand" style="padding:10px;">
+                <img src="./assets/images/logo-jetbrick-template-light.png" height="30">
+            </a>
+        </div>
 
-            <div class="col-xs-9">
-                <div class="pull-right" role="toolbar">
-                    <span style="font-size:18px;" ng-show="executing">
-                        <i class="fa fa-spinner fa-spin"></i> &nbsp; Waiting... &nbsp; &nbsp; &nbsp;
-                    </span>
+        <div class="pull-left" style="color:#fff; margin-left:20px; padding-top:8px; font-size: 26px;">
+        	Online 演示平台
+        </div>
 
-                    <button class="btn btn-primary" title="Execute the template" ng-click="execute()">
-                        <i class="fa fa-play"></i> Execute
-                    </button>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://subchen.github.io/jetbrick-template/2x/overview.html"><i class="fa fa-file-text"></i> &nbsp; 文档</a></li>
+                <li><a href="http://subchen.github.io/jetbrick-template/2x/download.html"><i class="fa fa-download"></i> &nbsp; 下载</a></li>
+                <li><a href="http://github.com/subchen/jetbrick-template-2x"><i class="fa fa-github-alt"></i> &nbsp; 源码</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-                    &nbsp;&nbsp;
-                    <div class="btn-group">
-                        <button class="btn btn-default" title="Add new template" ng-click="add()">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                        <button class="btn btn-default" title="Rename current template" ng-click="rename()">
-                            <i class="fa fa-edit"></i>
-                        </button>
-                        <button class="btn btn-default" title="Delete current template" ng-click="remove()">
-                            <i class="fa fa-remove"></i>
-                        </button>
-                    </div>
-                    &nbsp;&nbsp;
 
-                    <button class="btn btn-success" title="Share the template" ng-click="share()">
-                        <i class="fa fa-share"></i> Share
-                    </button>
-                </div>
-
-                <div role="file-pannel">
-                    <ul class="nav nav-tabs">
-                        <li ng-class="{active: f==testcase.file}" ng-repeat="f in testcase.files" ng-click="testcase.file=f">
-                            <a href="#" data-toggle="tab">
-                                <i class="fa fa-file-text-o"></i> &nbsp; {{f.name}}
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="edit-panel" ng-show="editing">
-                        <form class="form-inline">
-                            <input type="text" class="form-control" autofocus="autofocus" placeholder="Input file name" ng-model="testcase.file.name" size="30">
-                            <button class="btn" ng-click="editing=false">
-                                <i class="fa fa-remove"></i>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="tab-content">
-                        <div ng-repeat="f in testcase.files" ng-class="{'tab-pane': true, active: f==testcase.file}" >
-                            <div ui-ace="{useWrapMode:false, theme:'monokai', mode:'jetx', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="false" ng-model="f.source"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <br/>
-
-                <div role="model-panel">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a data-toggle="tab">
-                                <i class="fa fa-file-code-o"></i> &nbsp; Model.json
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active">
-                            <div ui-ace="{useWrapMode:false, theme:'monokai', mode:'json', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="false" ng-model="testcase.model"></div>
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top:5px;color:#888">
-                    Note: you can use <a href="#">sample model classes <i class="fa fa-external-link"></i></a> and most JDK classes as argument types
-                </div>
-
-                <br/>
-
-                <div role="result-panel">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a>
-                                <i class="fa fa-th"></i> &nbsp; Execution Result
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active">
-                            <div ui-ace="{useWrapMode:false, theme:'monokai', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="true" ng-model="testcase.result"></div>
-                        </div>
-                    </div>
-                    <a href="#" class="pull-right" style="padding-top:20px;" ng-click="scrolltop()">
-                        <img src="./assets/images/scrolltop.png" />
-                    </a>
-                </div>
-
+<div class="container" ng-controller="TestCaseController">
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="list-group" role="navlist">
+                <a href="#" class="list-group-item" ng-repeat="tc in testcases" ng-class="{active: tc==testcase}" ng-click="switchTestCase(tc.id)">
+                    <i class="fa fa-chevron-right"></i> {{tc.id}}. {{tc.desc}}
+                </a>
             </div>
         </div>
 
-        <br/>
-        <br/>
-        <br/>
+        <div class="col-xs-9">
+            <div class="pull-right" role="toolbar">
+                <span style="font-size:18px;" ng-show="executing">
+                    <i class="fa fa-spinner fa-spin"></i> &nbsp; Waiting... &nbsp; &nbsp; &nbsp;
+                </span>
 
+                <button class="btn btn-primary" title="Execute the template" ng-click="execute()">
+                    <i class="fa fa-play"></i> Execute
+                </button>
+
+                &nbsp;&nbsp;
+                <div class="btn-group">
+                    <button class="btn btn-default" title="Add new template" ng-click="add()">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <button class="btn btn-default" title="Rename current template" ng-click="rename()">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button class="btn btn-default" title="Delete current template" ng-click="remove()">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                </div>
+                &nbsp;&nbsp;
+
+                <button class="btn btn-success" title="Share the template" ng-click="share()">
+                    <i class="fa fa-share"></i> Share
+                </button>
+            </div>
+
+            <div role="file-pannel">
+                <ul class="nav nav-tabs">
+                    <li ng-class="{active: f==testcase.file}" ng-repeat="f in testcase.files" ng-click="testcase.file=f">
+                        <a href="#" data-toggle="tab">
+                            <i class="fa fa-file-text-o"></i> &nbsp; {{f.name}}
+                        </a>
+                    </li>
+                </ul>
+                <div class="edit-panel" ng-show="editing">
+                    <form class="form-inline">
+                        <input type="text" class="form-control" autofocus="autofocus" placeholder="Input file name" ng-model="testcase.file.name" size="30">
+                        <button class="btn" ng-click="editing=false">
+                            <i class="fa fa-remove"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="tab-content">
+                    <div ng-repeat="f in testcase.files" ng-class="{'tab-pane': true, active: f==testcase.file}" >
+                        <div ui-ace="{useWrapMode:false, theme:'monokai', mode:'jetx', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="false" ng-model="f.source"></div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+
+            <div role="model-panel">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab">
+                            <i class="fa fa-file-code-o"></i> &nbsp; Model.json
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div ui-ace="{useWrapMode:false, theme:'monokai', mode:'json', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="false" ng-model="testcase.model"></div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:5px;color:#888">
+                Note: you can use <a href="#">sample model classes <i class="fa fa-external-link"></i></a> and most JDK classes as argument types
+            </div>
+
+            <br/>
+
+            <div role="result-panel">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a>
+                            <i class="fa fa-th"></i> &nbsp; Execution Result
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div ui-ace="{useWrapMode:false, theme:'monokai', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="true" ng-model="testcase.result"></div>
+                    </div>
+                </div>
+                <a href="#" class="pull-right" style="padding-top:20px;" ng-click="scrolltop()">
+                    <img src="./assets/images/scrolltop.png" />
+                </a>
+            </div>
+
+        </div>
     </div>
+</div>
+
+<footer>
+    <div class="container jb-footer">
+        <hr>
+        <p>Copyright 2013-2014 Guoqiang Chen. All rights reserved.</p>
+        <p><i class="fa fa-envelope"></i> subchen&#64;gmail.com <i class="fa fa-qq"></i> 310491655</p>
+    </div>
+</footer>
 
 <script type="text/javascript">
 var app = angular.module('jetx-online', ['ui.ace']);
