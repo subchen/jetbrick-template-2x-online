@@ -9,9 +9,10 @@
     <link href="./assets/css/font-awesome.min.css" rel="stylesheet">
 
     <script src="./assets/js/jquery.min.js" type="text/javascript"></script>
-    <script src="./assets/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="./assets/js/ace/ace.js" type="text/javascript"></script>
     <script src="./assets/js/jquery.scrollintoview.js" type="text/javascript"></script>
+    <script src="./assets/js/angular.min.js" type="text/javascript"></script>
+    <script src="./assets/js/ace/ace.js" type="text/javascript"></script>
+    <script src="./assets/js/ui-ace.js" type="text/javascript"></script>
 </head>
 
 <style type="text/css">
@@ -23,15 +24,16 @@
     font-size: 14px;
     line-height: 20px;
 }
-
-.btn {
-    padding: 5px 12px;
+[role=model-panel] .ace_editor {
+    height: 150px;
+}
+[role=result-panel] .ace_editor {
+    height: 300px;
 }
 
 .list-group-item i {
     display: none;
 }
-
 .list-group-item.active i,
 .list-group-item:hover i {
     float:right;
@@ -40,130 +42,81 @@
     display: block;
 }
 
-.waiting {
-    display: none;
-}
-
 .edit-panel {
     margin-top: 10px;
-    display: none;
 }
-
 .form-control {
     height: 33px;
     padding: 0 6px;
 }
-
+.btn {
+    padding: 5px 12px;
+}
 </style>
 
 
-<body>
+<body ng-app="jetx-online">
     <br>
     <br>
 
-    <div class="container">
+    <div class="container" ng-controller="TestCaseController">
         <div class="row">
             <div class="col-xs-3">
                 <div class="list-group" role="navlist">
-                    <!--
-                    <a href="#" class="list-group-item active">
-                        <i class="fa fa-chevron-right"></i> 01. Hello World
+                    <a href="#" class="list-group-item" ng-repeat="tc in testcases" ng-class="{active: tc==testcase}" ng-click="switchTestCase(tc.id)">
+                        <i class="fa fa-chevron-right"></i> {{tc.id}}. {{tc.desc}}
                     </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 02. if/else/elseif
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 03. for/else
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 04. break/continue
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 05. include
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 06. Layout
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 07. Extends Method
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 08. Extends Function
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 09. Tag
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 10. Macro
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 11. safecall
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 12. format
-                    </a>
-                    <a href="#" class="list-group-item">
-                        <i class="fa fa-chevron-right"></i> 13. Security Manager
-                    </a>
-                    -->
                 </div>
             </div>
 
-
             <div class="col-xs-9">
                 <div class="pull-right" role="toolbar">
-                    <span style="font-size:18px;" class="waiting">
+                    <span style="font-size:18px;" ng-show="executing">
                         <i class="fa fa-spinner fa-spin"></i> &nbsp; Waiting... &nbsp; &nbsp; &nbsp;
                     </span>
 
-                    <button class="btn btn-primary" title="Execute the template">
+                    <button class="btn btn-primary" title="Execute the template" ng-click="execute()">
                         <i class="fa fa-play"></i> Execute
                     </button>
 
                     &nbsp;&nbsp;
                     <div class="btn-group">
-                        <button class="btn btn-default" title="Add new template">
+                        <button class="btn btn-default" title="Add new template" ng-click="add()">
                             <i class="fa fa-plus"></i>
                         </button>
-                        <button class="btn btn-default" title="Rename current template">
+                        <button class="btn btn-default" title="Rename current template" ng-click="rename()">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="btn btn-default" title="Delete current template">
+                        <button class="btn btn-default" title="Delete current template" ng-click="remove()">
                             <i class="fa fa-remove"></i>
-                        </button>
-                        <button class="btn btn-default" title="Set current template as main entry">
-                            <i class="fa fa-heart"></i>
                         </button>
                     </div>
                     &nbsp;&nbsp;
 
-                    <button class="btn btn-success" title="Share the template">
+                    <button class="btn btn-success" title="Share the template" ng-click="share()">
                         <i class="fa fa-share"></i> Share
                     </button>
                 </div>
 
                 <div role="file-pannel">
                     <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#file1" data-toggle="tab">
-                                <i class="fa fa-file-text"></i> &nbsp; Main.jetx
+                        <li ng-class="{active: f==testcase.file}" ng-repeat="f in testcase.files" ng-click="testcase.file=f">
+                            <a href="#" data-toggle="tab">
+                                <i class="fa fa-file-text-o"></i> &nbsp; {{f.name}}
                             </a>
                         </li>
                     </ul>
-                    <div class="edit-panel">
+                    <div class="edit-panel" ng-show="editing">
                         <form class="form-inline">
-                            <input type="text" class="form-control" autofocus="autofocus" placeholder="Input file name">
-                            <button class="btn">
-                                <i class="fa fa-check"></i>
-                            </button>
-                            <button class="btn">
+                            <input type="text" class="form-control" autofocus="autofocus" placeholder="Input file name" ng-model="testcase.file.name" size="30">
+                            <button class="btn" ng-click="editing=false">
                                 <i class="fa fa-remove"></i>
                             </button>
                         </form>
                     </div>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="file1">
-                            <div class="ace-editor" ace-mode="jetx" ace-readOnly="false"></div>
+                        <div ng-repeat="f in testcase.files" ng-class="{'tab-pane': true, active: f==testcase.file}" >
+                            <div ui-ace="{useWrapMode:false, theme:'monokai', mode:'jetx', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="false" ng-model="f.source"></div>
                         </div>
                     </div>
                 </div>
@@ -178,10 +131,9 @@
                             </a>
                         </li>
                     </ul>
-
                     <div class="tab-content">
                         <div class="tab-pane active">
-                            <div class="ace-editor" ace-mode="json" ace-readOnly="false" style="height:150px;"></div>
+                            <div ui-ace="{useWrapMode:false, theme:'monokai', mode:'json', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="false" ng-model="testcase.model"></div>
                         </div>
                     </div>
                 </div>
@@ -201,9 +153,12 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active">
-                            <div class="ace-editor" ace-mode="html" ace-readOnly="true"></div>
+                            <div ui-ace="{useWrapMode:false, theme:'monokai', advanced:{showPrintMargin:false, tabSize:4}}" readOnly="true" ng-model="testcase.result"></div>
                         </div>
                     </div>
+                    <a href="#" class="pull-right" style="padding-top:20px;" ng-click="scrolltop()">
+                        <img src="./assets/images/scrolltop.png" />
+                    </a>
                 </div>
 
             </div>
@@ -212,128 +167,104 @@
         <br/>
         <br/>
         <br/>
-        <br/>
-        <br/>
 
     </div>
 
 <script type="text/javascript">
-$(function () {
-    initializeFileList();
-    initializeAceEditor();
-    initializeButtons();
-});
+var app = angular.module('jetx-online', ['ui.ace']);
+app.controller('TestCaseController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+    $scope.editing = false;
+    $scope.executing = false;
 
-function initializeFileList() {
-    var $navlist = $('[role=navlist]');
-
-    var url = 'http://127.0.0.1:8080/files?callback=?';
-    $.getJSON(url, function(data) {
-        var template = '<a href="#" class="list-group-item" file-id="{{id}}"><i class="fa fa-chevron-right"></i> {{id}}. {{desc}}</a>';
-        for (var i=0; i<data.length; i++) {
-            var html = template;
-            html = html.replace(new RegExp('{{id}}', 'g'), data[i].id);
-            html = html.replace('{{desc}}', data[i].desc);
-            $navlist.append(html);
-        }
+    var xhr = $http.get('./testcases', {cache:false});
+    xhr.success(function(data) {
+        $scope.testcases = data;
+        $scope.switchTestCase($scope.testcases[0].id);
     });
 
-    var uuid = 100;
-    $navlist.on('click', 'a', function() {
-        var fileId = $(this).attr('file-id');
-        var url = 'http://127.0.0.1:8080/files/' + fileId + '?callback=?';
-        $.getJSON(url, function(data) {
-            var template1 = '<li><a href="#{{id}}" data-toggle="tab"><i class="fa fa-file-text"></i> &nbsp; {{name}}</a></li>';
-            var template2 = '<div class="tab-pane" id="{{id}}"><div class="ace-editor" ace-mode="jetx" ace-readOnly="false">{{source}}</div></div>';
-            var html;
-            var $tabs = $('[role=file-pannel] .nav-tabs').empty();
-            var $editors = $('[role=file-pannel] .tab-content').empty();
-            for (var i=0; i<data.files.length; i++) {
-                var id = "u" + (uuid++);
-
-                html = template1;
-                html = html.replace('{{id}}', id);
-                html = html.replace('{{name}}', data.files[i]);
-                $tabs.append(html);
-
-                html = template2;
-                html = html.replace('{{id}}', id);
-                html = html.replace('{{source}}', data.sources[i]);
-                $editors.append(html);
+    $scope.switchTestCase = function(id) {
+        var testcase;
+        for (var i=0; i<$scope.testcases.length; i++) {
+            if ($scope.testcases[i].id == id) {
+                testcase = $scope.testcases[i];
+                break;
             }
+        }
 
-            var editor;
-            editor = ace.edit($('[role=model-panel] .ace-editor')[0]);
-            editor.getSession().setValue(data.model);
-            editor = ace.edit($('[role=result-panel] .ace-editor')[0]);
-            editor.getSession().setValue('');
+        if (angular.isUndefined(testcase.model)) {
+            var xhr = $http.get('./testcases/' + testcase.id, {cache:false});
+            xhr.success(function(data) {
+                testcase.files = data.files;
+                testcase.model = data.model;
+                testcase.result = '';
 
-            $tabs.find('li:first').addClass('active');
-            initializeAceEditor();
-            $editors.find('.tab-pane:first').addClass('active').slideDown();
-        });
+                $scope.testcase = testcase;
+                $scope.testcase.file = $scope.testcase.files[0];
+                $scope.editing = false;
+                $scope.executing = false;    
+            });
+        } else {
+            $scope.testcase = testcase;
+            $scope.testcase.file = $scope.testcase.files[0];
+            $scope.editing = false;
+            $scope.executing = false;
+        }
+    };
 
-        $navlist.find('a.active').removeClass('active');
-        $(this).addClass('active');
-    });
-}
-
-function initializeAceEditor() {
-    $('.ace-editor').each(function() {
-        var $dom = $(this);
-        var editor = ace.edit(this);
-        editor.setTheme('ace/theme/monokai');
-        editor.setShowPrintMargin(false);
-        editor.setReadOnly($dom.attr('ace-readOnly') == 'true');
-        var session = editor.getSession();
-        session.setMode('ace/mode/' + $dom.attr('ace-mode'));
-        session.setTabSize(4);
-        session.setUseWrapMode(true);
-        session.setNewLineMode('unix');
-    });
-}
-
-function initializeButtons() {
-    $('[role=toolbar] .fa-edit').parent().on('click', function() {
-        $('.edit-panel input').val($.trim($('[role=file-pannel] .nav-tabs li.active').text()));
-        $('.edit-panel').show();
-    });
-
-    $('[role=toolbar] .fa-play').parent().on('click', function() {
-        var files = [], sources = [];
-        $('[role=file-pannel] .nav-tabs a').each(function() {
-            files.push($.trim($(this).text()));
-        });
-        $('[role=file-pannel] .ace-editor').each(function() {
-            var editor = ace.edit(this);
-            sources.push(editor.getSession().getValue());
-        });
-
-        var editor = ace.edit($('[role=model-panel] .ace-editor')[0]);
-
-        var parameters = {
-            files: JSON.stringify(files),
-            sources: JSON.stringify(sources),
-            model: editor.getSession().getValue(),
-            entryIndex: 0
+    $scope.uuid = 1;
+    $scope.add = function() {
+        var file = {
+            name: 'file-' + ($scope.uuid++) + '.jetx',
+            source: ''
         };
+        $scope.testcase.files.push(file);
+        $scope.testcase.file = file;
+        $scope.editing = true;
+    }
+    $scope.rename = function() {
+        $scope.editing = true;
+    };
+    $scope.remove = function() {
+        if ($scope.testcase.files.length == 1) {
+            $window.alert("Unable to delete last file.");
+            return;
+        }
+        var index = $scope.testcase.files.indexOf($scope.testcase.file);
+        $scope.testcase.files.splice(index, 1);
+        $scope.testcase.file = $scope.testcase.files[0];
+    }
+    $scope.share = function() {
+        $window.alert("Let's wait next version to implement it.");
+    }
+    $scope.execute = function() {
+        $scope.executing = true;
+        $scope.editing = false;
 
-        $('.waiting').show();
-
-        var editor = ace.edit($('[role=result-panel] .ace-editor')[0]);
-        editor.getSession().setValue('Waiting for execute ...');
-
-        var url = "http://127.0.0.1:8080/execute";
-        $.post(url, parameters, function(data) {
-            $('.waiting').hide();
-            editor.getSession().setValue(data.result);
-            $('[role=result-panel]').scrollintoview();
-        }, 'jsonp');
-    });
-}
+        var xhr = $http({
+            url: './execute',
+            method: 'post',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            data: jQuery.param({
+                files: JSON.stringify($scope.testcase.files),
+                model: $scope.testcase.model
+            })
+        });
+        xhr.success(function(data) {
+            $scope.testcase.result = data.result;
+            $scope.executing = false;
+            jQuery('[role=result-panel] .ace_editor').scrollintoview();
+        });
+        xhr.error(function(data) {
+            $scope.testcase.result = data || "Failed to execute";
+            $scope.executing = false;
+        });
+    };
+    $scope.scrolltop = function() {
+        jQuery('body').scrollintoview();
+    }
+}]);
 </script>
 
 </body>
-
 </html>
 
