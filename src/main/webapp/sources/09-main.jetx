@@ -2,7 +2,16 @@
     Hello ${name}
 #end
 
+-----------------------------------------
+  inline macro call
+-----------------------------------------
 #call hello("Jetbrick")
 #call hello("World")
 ${macroGet("hello", name)}
 ${macroGet("hello", "?")}
+
+-----------------------------------------
+  extenal macro call
+-----------------------------------------
+#call title("Online TestCase")
+#call footer()

@@ -1,0 +1,7 @@
+#macro title(String name)
+    <title>${name}</title>
+#end
+
+#macro footer()
+    <footer>Copyright @ jetbrick</footer>
+#end

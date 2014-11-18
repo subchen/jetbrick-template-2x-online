@@ -41,8 +41,8 @@
     },
     {
         "id":"09",
-        "desc":"Macro call",
-        "files": [ "main.jetx" ]
+        "desc":"Macro Call",
+        "files": [ "main.jetx", "macro.jetx" ]
     },
     {
         "id":"10",
