@@ -1,5 +1,9 @@
+#options(
+	loadmacro = "macro.jetx"
+)
+
 #macro hello(String name)
-    Hello ${name}
+  Hello ${name}
 #end
 
 -----------------------------------------

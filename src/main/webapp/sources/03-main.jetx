@@ -2,14 +2,14 @@
   for (List)
 -----------------------------------------
 #for(String mon: months)
-    ${for.index}: ${mon}
+  ${for.index}: ${mon}
 #end
 
 -----------------------------------------
   for (Map)
 -----------------------------------------
 #for(Map.Entry entry: user)
-    ${entry.key}: ${entry.value}
+  ${entry.key}: ${entry.value}
 #end
 
 -----------------------------------------
@@ -22,7 +22,7 @@
   for / else
 -----------------------------------------
 #for(Object item: emptyItems)
-    ${item}
+  ${item}
 #else
-    No items
+  No items
 #end

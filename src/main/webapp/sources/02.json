@@ -1,7 +1,7 @@
 {
-    "user": {
-        "auth": true,
-        "name": "jetbrick",
-        "role": "vip"
-    }
+  "user": {
+    "auth": true,
+    "name": "jetbrick",
+    "role": "vip"
+  }
 }

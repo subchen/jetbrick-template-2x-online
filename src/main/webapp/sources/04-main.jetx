@@ -2,14 +2,14 @@
   break
 -----------------------------------------
 #for(String mon: months)
-    ${mon}
-    #break(for.index > 6)
+  ${mon}
+  $break(for.index > 6)
 #end
 
 -----------------------------------------
   continue
 -----------------------------------------
 #for(String mon: months)
-    #continue(for.index < 6)
-    ${mon}
+  #continue(for.index < 6)
+  ${mon}
 #end

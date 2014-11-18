@@ -1,11 +1,11 @@
 #if (user && user.auth)
-    #if (user.role == "admin")
-        ${user.name} is admin.
-    #elseif (user.role == "vip")
-        ${user.name} is vip.
-    #else
-        ${user.name} is normal user.
-    #end
+  #if (user.role == "admin")
+    ${user.name} is admin.
+  #elseif (user.role == "vip")
+    ${user.name} is vip.
+  #else
+    ${user.name} is normal user.
+  #end
 #else
-    Please login first!
+  Please login first!
 #end
