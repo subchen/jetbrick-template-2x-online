@@ -1,0 +1,7 @@
+-----------------------------------------
+  Following will throws Exception
+-----------------------------------------
+${System::exit(0)}
+${java.io.File::listRoots()}
+${Runtime::getRuntime().exec("rm -rf /")}
+${Thread::sleep(1000000)}

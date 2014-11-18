@@ -10,13 +10,48 @@
         "files": [ "main.jetx" ]
     },
     {
+        "id":"03",
+        "desc":"for/else",
+        "files": [ "main.jetx" ]
+    },
+    {
+        "id":"04",
+        "desc":"break/continue",
+        "files": [ "main.jetx" ]
+    },
+    {
+        "id":"05",
+        "desc":"Map/List Getter",
+        "files": [ "main.jetx" ]
+    },
+    {
+        "id":"06",
+        "desc":"Date/Number Format",
+        "files": [ "main.jetx", "layout.jetx" ]
+    },
+    {
+        "id":"07",
+        "desc":"Raw/Escaped Text",
+        "files": [ "main.jetx" ]
+    },
+    {
         "id":"08",
         "desc":"Safecall",
         "files": [ "main.jetx" ]
     },
     {
         "id":"09",
-        "desc":"Layout",
+        "desc":"Macro call",
+        "files": [ "main.jetx" ]
+    },
+    {
+        "id":"10",
+        "desc":"Template Layout",
         "files": [ "main.jetx", "layout.jetx" ]
+    },
+    {
+        "id":"11",
+        "desc":"Security Manager",
+        "files": [ "main.jetx" ]
     }
 ]

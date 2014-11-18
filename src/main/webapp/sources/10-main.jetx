@@ -1,0 +1,5 @@
+#tag layout_block('a')
+  new block a
+#end
+
+#include('layout.jetx')

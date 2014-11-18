@@ -1,0 +1,2 @@
+${users[0].name}: ${users[0].age}
+${users[1].name}: ${users[1].age}

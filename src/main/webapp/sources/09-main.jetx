@@ -1,2 +1,8 @@
-#set(String who = "jetbrick")
-#include("layout.jetx")
+#macro hello(String name)
+     Hello ${name}
+#end
+
+#call hello("Jetbrick")
+#call hello("World")
+${macroGet("hello", name)}
+${macroGet("hello", "?")}
