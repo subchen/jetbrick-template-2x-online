@@ -15,7 +15,7 @@ ${macroGet("hello", name)}
 ${macroGet("hello", "?")}
 
 -----------------------------------------
-  extenal macro call
+  external macro call
 -----------------------------------------
 #call title("Online TestCase")
 #call footer()
