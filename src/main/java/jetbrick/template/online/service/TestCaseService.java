@@ -38,8 +38,8 @@ public final class TestCaseService {
         testcaseMap.put(id, json); // cache
 
         JSONArray fileObjectList = new JSONArray();
-        for (Object testcase: testcaseList) {
-            JSONObject tc = (JSONObject)testcase;
+        for (Object testcase : testcaseList) {
+            JSONObject tc = (JSONObject) testcase;
             if (id.equals(tc.getString("id"))) {
                 for (Object file : tc.getJSONArray("files")) {
                     JSONObject fileObject = new JSONObject();
